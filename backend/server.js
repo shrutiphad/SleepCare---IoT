@@ -10,26 +10,31 @@ app.use(express.json());
 const server = http.createServer(app);
 
 const io = new Server(server, {
-  cors: { origin: "*" }
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
 });
 
 io.on("connection", socket => {
-  console.log("Client connected");
-
-  socket.on("sensor-data", data => {
-    io.emit("sensor-update", data);
-  });
+  console.log("Client connected:", socket.id);
 
   socket.on("disconnect", () => {
     console.log("Client disconnected");
   });
 });
 
-app.post("/esp32", (req, res) => {
-  io.emit("sensor-update", req.body);
-  res.send({ ok: true });
+// ESP32 / CURL POSTS HERE
+app.post("/sensor-data", (req, res) => {
+  const data = req.body;
+
+  console.log("Sensor Data:", data);
+
+  io.emit("sensor-update", data);
+
+  res.json({ status: "ok" });
 });
 
 server.listen(3001, () => {
-  console.log("Server running on 3001");
+  console.log("Server running on http://localhost:3001");
 });
