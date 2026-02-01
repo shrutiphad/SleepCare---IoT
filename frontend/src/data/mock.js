@@ -2,10 +2,10 @@
 
 export const mockPatient = {
   id: "PAT-2025-001",
-  fullName: "Sarah Johnson",
-  email: "sarah.johnson@email.com",
+  fullName: "Mariyah Shaikh",
+  email: "mariyah@email.com",
   dob: "1990-05-15",
-  age: 35,
+  age: 21,
   mobile: "+1 (555) 123-4567",
   gender: "Female",
   height: 165,
@@ -14,7 +14,7 @@ export const mockPatient = {
   bloodGroup: "O+",
   conditions: ["Sleep Apnea", "Mild Hypertension"],
   caretaker: {
-    name: "Michael Johnson",
+    name: "Aryan Shinde",
     relationship: "Spouse",
     phone: "+1 (555) 987-6543"
   }
@@ -22,8 +22,8 @@ export const mockPatient = {
 
 export const mockCaretaker = {
   id: "CTK-2025-001",
-  fullName: "Michael Johnson",
-  email: "michael.johnson@email.com",
+  fullName: "Aryan Shinde",
+  email: "aryan@email.com",
   mobile: "+1 (555) 987-6543",
   gender: "Male",
   dob: "1988-08-22",
