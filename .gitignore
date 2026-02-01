@@ -61,7 +61,11 @@ chainlit.md
 # Deployment
 .vercel
 
+<<<<<<< HEAD
 # Data and databases
+=======
+
+>>>>>>> db308ff (monitor display updates)
 agenthub/agents/youtube/db
 
 # Archive files and large assets

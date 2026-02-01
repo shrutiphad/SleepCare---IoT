@@ -72,7 +72,11 @@ export const mockMonitoringModes = [
     description: "Basic vital signs monitoring for general health tracking",
     icon: "Activity",
     color: "emerald",
+<<<<<<< HEAD
     sensors: ["SpO₂", "Heart Rate", "Pressure", "Breathing"]
+=======
+    sensors: ["SpO₂", "Heart Rate", "Pressure"]
+>>>>>>> db308ff (monitor display updates)
   },
   {
     id: "heart",
@@ -80,7 +84,11 @@ export const mockMonitoringModes = [
     description: "Enhanced cardiac monitoring with ECG integration",
     icon: "Heart",
     color: "rose",
+<<<<<<< HEAD
     sensors: ["SpO₂", "Heart Rate", "ECG BPM", "Pressure", "Breathing"]
+=======
+    sensors: ["SpO₂", "Heart Rate", "ECG BPM", "Pressure"]
+>>>>>>> db308ff (monitor display updates)
   },
   {
     id: "brain",
