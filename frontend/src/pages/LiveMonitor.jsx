@@ -36,7 +36,7 @@ export default function LiveMonitor() {
   const [vitals, setVitals] = useState({
     spo2: 0,
     bpm: 0,
-    pressure: 0,
+    presence: 0,
     breathing: 0,
     ecg: 0,
     eegAlpha: 0,
@@ -54,7 +54,7 @@ export default function LiveMonitor() {
       setVitals({
         spo2: data.spo2 || 0,
         bpm: data.heart_rate || 0,
-        pressure: data.presence || 0,
+       presence: data.presence > 0 ? "YES" : "NO",
         breathing: data.breathing || 0,
         ecg: data.ecg || 0,
         eegAlpha: data.alpha || 0,
@@ -127,7 +127,7 @@ export default function LiveMonitor() {
           <span className={`px-3 py-1.5 rounded-full text-sm ${
             connected ? "bg-emerald-50 text-emerald-600" : "bg-rose-50 text-rose-600"
           }`}>
-            {connected ? "🟢 Live" : "🔴 Disconnected"}
+            {connected ? " Live" : " Disconnected"}
           </span>
         </div>
       </header>
@@ -166,7 +166,7 @@ export default function LiveMonitor() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <VitalCard icon={Droplets} label="SpO₂" value={vitals.spo2} unit="%" color="cyan" />
           <VitalCard icon={Heart} label="Heart Rate" value={vitals.bpm} unit="BPM" color="rose" />
-          <VitalCard icon={Gauge} label="Pressure" value={vitals.pressure} unit="mmHg" color="amber" />
+          <VitalCard icon={Gauge} label="Presence" value={vitals.presence} unit="" color="amber" />
           <VitalCard icon={Wind} label="Breathing" value={vitals.breathing} unit="/min" color="emerald" />
           <VitalCard icon={Activity} label="ECG" value={vitals.ecg} unit="" color="red" />
           <VitalCard icon={Zap} label="EEG Alpha" value={vitals.eegAlpha} unit="µV" color="indigo" />
