@@ -18,8 +18,8 @@ function App() {
           <Route path="/role-select" element={<RoleSelect />} />
           <Route path="/signup/patient" element={<PatientSignup />} />
           <Route path="/signup/caretaker" element={<CaretakerSignup />} />
-          <Route path="/mode-select" element={<ModeSelect />} />
-          <Route path="/monitor/:mode" element={<LiveMonitor />} />
+          <Route path="/mode" element={<ModeSelect />} />
+          <Route path="/monitor" element={<LiveMonitor />} />
         </Routes>
       </BrowserRouter>
     </div>
