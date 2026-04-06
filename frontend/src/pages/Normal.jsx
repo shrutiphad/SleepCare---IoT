@@ -137,7 +137,7 @@ export default function NormalMonitor() {
           <Button variant="outline">
             <Power className="w-4 h-4 mr-2" /> End Session
           </Button>
-
+          <Button onClick={() => navigate("/history")}>View History</Button>
           <Button className={`bg-gradient-to-r ${currentMode.gradient} text-white`}>
             Download Report
           </Button>

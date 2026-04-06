@@ -27,7 +27,7 @@ io.on("connection", socket => {
 });
 
 
-mongoose.connect("mongodb://localhost:27017/sleepcare");
+//mongoose.connect("mongodb://localhost:27017/sleepcare");
 
 const ReadingSchema = new mongoose.Schema({
   mode:         Number,
@@ -47,22 +47,16 @@ const ReadingSchema = new mongoose.Schema({
 
 const Reading = mongoose.model("Reading", ReadingSchema);
 
-// Inside your /sensor-data POST handler — add this line:
-app.post("/sensor-data", async (req, res) => {
-  const data = req.body;
-  io.emit("sensor-update", data);
-
-  // ← ADD THIS: save every reading to MongoDB
-  await Reading.create(data);
-
-  res.json({ status: "ok" });
-});
-
-
+mongoose.connect(
+  //"mongodb+srv://shrutiphadwork:shruti@cluster0.7dklm23.mongodb.net/?appName=Cluster0"
+  "mongodb://shrutiphadwork:shruti@ac-cwjiuhy-shard-00-00.7dklm23.mongodb.net:27017,ac-cwjiuhy-shard-00-01.7dklm23.mongodb.net:27017,ac-cwjiuhy-shard-00-02.7dklm23.mongodb.net:27017/?ssl=true&replicaSet=atlas-kp2bot-shard-0&authSource=admin&appName=Cluster0"
+)
+.then(() => console.log("MongoDB Atlas Connected"))
+.catch(err => console.log(err));
 
 
 app.post("/sensor-data", async(req, res) => {
-  const data = req.body;
+  try {const data = req.body;
 
   console.log("Sensor Data:", data);
 
@@ -71,7 +65,12 @@ app.post("/sensor-data", async(req, res) => {
   await Reading.create(data);
 
   res.json({ status: "ok" });
+} catch (err) {
+  console.log(err);
+  res.status(500).json({ error: "Failed to save data" });
+}
 });
+
 
 
 app.get("/history", async (req, res) => {
