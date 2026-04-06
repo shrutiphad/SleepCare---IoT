@@ -6,7 +6,12 @@ import RoleSelect from "./pages/RoleSelect";
 import PatientSignup from "./pages/PatientSignup";
 import CaretakerSignup from "./pages/CaretakerSignup";
 import ModeSelect from "./pages/ModeSelect";
-import LiveMonitor from "./pages/LiveMonitor";
+import NormalMonitor  from "./pages/Normal";
+import HeartMonitor   from "./pages/Heart";
+import BrainMonitor   from "./pages/Brain";
+import BreathingMonitor from "./pages/Breathing";
+import History from "./pages/History";
+import Chat from "./pages/Chat";
 
 function App() {
   return (
@@ -18,8 +23,13 @@ function App() {
           <Route path="/role-select" element={<RoleSelect />} />
           <Route path="/signup/patient" element={<PatientSignup />} />
           <Route path="/signup/caretaker" element={<CaretakerSignup />} />
-          <Route path="/mode" element={<ModeSelect />} />
-          <Route path="/monitor" element={<LiveMonitor />} />
+          <Route path="/mode-select"        element={<ModeSelect />} />
+          <Route path="/monitor/normal"     element={<NormalMonitor />} />
+          <Route path="/monitor/heart"      element={<HeartMonitor />} />
+          <Route path="/monitor/brain"      element={<BrainMonitor />} />
+          <Route path="/monitor/breathing"  element={<BreathingMonitor />} />
+          <Route path="/history"            element={<History />} />
+          <Route path="/chat"               element={<Chat />} />
         </Routes>
       </BrowserRouter>
     </div>

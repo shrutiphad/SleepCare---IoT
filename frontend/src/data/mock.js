@@ -33,37 +33,7 @@ export const mockCaretaker = {
   linkedPatientId: "PAT-2025-001"
 };
 
-export const mockVitalSigns = {
-  normal: {
-    spo2: 97,
-    bpm: 72,
-    pressure: 415,
-    breathing: 16
-  },
-  heart: {
-    spo2: 98,
-    bpm: 74,
-    ecgBpm: 76,
-    pressure: 420,
-    breathing: 15
-  },
-  brain: {
-    spo2: 97,
-    bpm: 68,
-    pressure: 410,
-    breathing: 14,
-    eegAlpha: 12.4,
-    eegBeta: 6.2,
-    eegGamma: 2.8,
-    alphaBetaRatio: 2.0
-  },
-  breathing: {
-    spo2: 96,
-    bpm: 70,
-    pressure: 405,
-    breathing: 18
-  }
-};
+
 
 export const mockMonitoringModes = [
   {
@@ -102,29 +72,7 @@ export const mockMonitoringModes = [
   }
 ];
 
-export const mockEcgData = Array.from({ length: 100 }, (_, i) => ({
-  time: i,
-  value: Math.sin(i * 0.3) * 30 + Math.random() * 10 + (i % 20 === 0 ? 60 : 0)
-}));
 
-export const mockEegData = {
-  alpha: Array.from({ length: 50 }, (_, i) => ({
-    time: i,
-    value: Math.sin(i * 0.2) * 15 + Math.random() * 5 + 10
-  })),
-  beta: Array.from({ length: 50 }, (_, i) => ({
-    time: i,
-    value: Math.sin(i * 0.4) * 8 + Math.random() * 3 + 5
-  })),
-  gamma: Array.from({ length: 50 }, (_, i) => ({
-    time: i,
-    value: Math.sin(i * 0.6) * 4 + Math.random() * 2 + 2
-  }))
-};
-
-export const generateLiveData = (baseValue, variance = 5) => {
-  return baseValue + (Math.random() - 0.5) * variance;
-};
 
 export const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
