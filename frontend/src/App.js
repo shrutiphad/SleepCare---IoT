@@ -10,7 +10,9 @@ import NormalMonitor  from "./pages/Normal";
 import HeartMonitor   from "./pages/Heart";
 import BrainMonitor   from "./pages/Brain";
 import BreathingMonitor from "./pages/Breathing";
-import History from "./pages/History";
+import HeartHistory    from "./pages/HeartHistory";
+import BrainHistory    from "./pages/BrainHistory";
+import BreathingHistory from "./pages/BreathingHistory";
 import Chat from "./pages/Chat";
 
 function App() {
@@ -28,7 +30,9 @@ function App() {
           <Route path="/monitor/heart"      element={<HeartMonitor />} />
           <Route path="/monitor/brain"      element={<BrainMonitor />} />
           <Route path="/monitor/breathing"  element={<BreathingMonitor />} />
-          <Route path="/history"            element={<History />} />
+          <Route path="/history/heart"     element={<HeartHistory />} />
+          <Route path="/history/brain"     element={<BrainHistory />} />
+          <Route path="/history/breathing" element={<BreathingHistory />} />
           <Route path="/chat"               element={<Chat />} />
         </Routes>
       </BrowserRouter>

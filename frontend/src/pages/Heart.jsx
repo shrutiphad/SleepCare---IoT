@@ -29,6 +29,8 @@ export default function HeartMonitor() {
   const [connected, setConnected] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
 
+  const [ecgLabel, setEcgLabel] = useState("Analysing...");
+
   useEffect(() => {
     const handleConnect = () => setConnected(true);
     const handleDisconnect = () => setConnected(false);
@@ -44,12 +46,16 @@ export default function HeartMonitor() {
       setLastUpdate(new Date());
 
     };
-
+    
+    socket.on("ecg-classification", (data) => {
+      setEcgLabel(data.label);
+    });
     socket.on("connect", handleConnect);
     socket.on("disconnect", handleDisconnect);
     socket.on("sensor-update", handleSensorUpdate);
   
     return () => {
+      socket.off("ecg-classification");
       socket.off("connect", handleConnect);
       socket.off("disconnect", handleDisconnect);
       socket.off("sensor-update", handleSensorUpdate);
@@ -138,7 +144,8 @@ export default function HeartMonitor() {
             <VitalCard icon={Gauge} label="Presence" value={vitals.presence} unit="" color="amber" />
             <VitalCard icon={Activity}   label="ECG HR / EEG RMS"        value={vitals.ecg}       unit=""     color="red"     />
             <VitalCard icon={Wind} label="ECG Stable / Breathing" value={vitals.breathing} unit="" color="sky" />
-            <VitalCard icon={AlertTriangle} label="Alert / Status"          value={vitals.alert}     unit=""     color="emerald" />
+          <VitalCard icon={AlertTriangle} label="Alert / Status" value={vitals.alert} unit="" color="emerald" />
+          <VitalCard icon={Brain} label="CNN Diagnosis" value={ecgLabel} unit="" color="rose" />
         </div>
   
           {/* ACTIONS */}
@@ -146,7 +153,8 @@ export default function HeartMonitor() {
             <Button variant="outline">
               <Power className="w-4 h-4 mr-2" /> End Session
             </Button>
-  
+            <Button onClick={() => navigate("/history/heart")}>View History</Button>
+
             <Button className={`bg-gradient-to-r ${currentMode.gradient} text-white`}>
               Download Report
             </Button>

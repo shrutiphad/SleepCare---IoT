@@ -19,8 +19,24 @@ import {
   Power,
 } from "lucide-react";
 
-export default function BrainMonitor() {
+//alertsss
+import { evaluate } from "../services/alertEngine";
+import AlertToast from "../components/AlertToast";
 
+
+
+socket.on("sensor-update", (data) => {
+  const fired = evaluate(data);
+  if (fired.length) setToastAlerts(fired);
+  // ... rest of setVitals
+});
+
+// In JSX:
+<AlertToast alerts={toastAlerts} />
+
+
+export default function BrainMonitor() {
+  const [toastAlerts, setToastAlerts] = useState([]);
   const navigate = useNavigate();
   const [vitals, setVitals] = useState({
     spo2: "--", bpm: "--", presence: "NO",
@@ -68,6 +84,13 @@ export default function BrainMonitor() {
       else if (a < 5 && b < 5) stage = "Deep Sleep";
       else stage = "Light Sleep";
   
+        const ratio = data.alpha / (data.beta || 1);
+      let eegInsight = "--";
+      if      (ratio > 1.5)  eegInsight = "Deeply Relaxed";
+      else if (ratio > 1.0)  eegInsight = "Calm / Drowsy";
+      else if (ratio < 0.5)  eegInsight = "Highly Alert / Stressed";
+            else eegInsight = "Neutral";
+            
       setVitals({
         spo2: data.spo2 ?? "--",
         bpm: data.heart_rate ?? "--",
@@ -77,6 +100,7 @@ export default function BrainMonitor() {
         gamma: g ?? "--",
         rms: data.rms ?? "--",
         sleepStage: stage,
+        insight: ratio ?? "--",
       });
   
       setLastUpdate(new Date());
@@ -169,7 +193,8 @@ export default function BrainMonitor() {
             <VitalCard icon={Gauge}         label="Presence"                value={vitals.presence}  unit=""     color="amber"   />
             <VitalCard icon={Zap}           label="EEG Alpha"               value={vitals.eegAlpha}  unit="µV"   color="indigo"  />
             <VitalCard icon={Waves}         label="EEG Beta"                value={vitals.eegBeta}   unit="µV"   color="violet"  />
-            <VitalCard icon={Brain}         label="EEG Gamma"               value={vitals.eegGamma}  unit="µV"   color="purple"  />
+            <VitalCard icon={Brain}     label="EEG Gamma"            value={vitals.eegGamma} unit="µV" color="purple" />
+            <VitalCard icon={Brain}         label="EEG Insight"               value={vitals.eegGamma}  unit="µV"   color="purple"  />
             <VitalCard icon={AlertTriangle} label="Alert / Status"          value={vitals.alert}     unit=""     color="emerald" />
           </div>
   
@@ -177,6 +202,7 @@ export default function BrainMonitor() {
             <Button variant="outline">
               <Power className="w-4 h-4 mr-2" /> End Session
             </Button>
+            <Button className={`bg-gradient-to-r ${currentMode.gradient} text-white`} onClick={() => navigate("/history/brain")}>View History</Button>
             <Button className={`bg-gradient-to-r ${currentMode.gradient} text-white`}>
               Download Report
             </Button>
