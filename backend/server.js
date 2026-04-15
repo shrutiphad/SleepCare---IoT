@@ -23,10 +23,8 @@ const io = new Server(server, {
 mongoose.connect(
   //"mongodb+srv://shrutiphadwork:shruti@cluster0.7dklm23.mongodb.net/?appName=Cluster0"
   "mongodb://shrutiphadwork:shruti@ac-cwjiuhy-shard-00-00.7dklm23.mongodb.net:27017,ac-cwjiuhy-shard-00-01.7dklm23.mongodb.net:27017,ac-cwjiuhy-shard-00-02.7dklm23.mongodb.net:27017/?ssl=true&replicaSet=atlas-kp2bot-shard-0&authSource=admin&appName=Cluster0"
-  , {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  
+  )
 .then(() => console.log("MongoDB Atlas Connected"))
 .catch(err => console.log(err));
 

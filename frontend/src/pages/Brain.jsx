@@ -2,6 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import socket from "../services/socket";
 import { useParams, useNavigate } from "react-router-dom";
 import VitalCard from "../components/data-ui/VitalCard"; 
+//alertsss
+import { evaluate } from "../services/alertEngine";
+import AlertToast from "../components/AlertToast";
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { mockPatient } from "../data/mock";
@@ -19,20 +22,7 @@ import {
   Power,
 } from "lucide-react";
 
-//alertsss
-import { evaluate } from "../services/alertEngine";
-import AlertToast from "../components/AlertToast";
 
-
-
-socket.on("sensor-update", (data) => {
-  const fired = evaluate(data);
-  if (fired.length) setToastAlerts(fired);
-  // ... rest of setVitals
-});
-
-// In JSX:
-<AlertToast alerts={toastAlerts} />
 
 
 export default function BrainMonitor() {
@@ -47,6 +37,10 @@ export default function BrainMonitor() {
   //MAIN LOGIC 
   
   socket.on("sensor-update", (data) => {
+
+    const fired = evaluate(data);
+    if (fired.length) setToastAlerts(fired);
+    
     const a = data.alpha || 0;
     const b = data.beta  || 0;
     const g = data.gamma || 0;
@@ -138,6 +132,7 @@ export default function BrainMonitor() {
           <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Button variant="ghost" size="sm" onClick={() => navigate("/mode-select")}>
+              <AlertToast alerts={toastAlerts} />
                 <ArrowLeft className="w-4 h-4 mr-2" /> Back
               </Button>
               <div className="flex items-center gap-2">
@@ -191,10 +186,10 @@ export default function BrainMonitor() {
             <VitalCard icon={Droplets}      label="SpO₂"                   value={vitals.spo2}      unit="%"    color="cyan"    />
             <VitalCard icon={Heart}         label="Heart Rate"              value={vitals.bpm}       unit="BPM"  color="rose"    />
             <VitalCard icon={Gauge}         label="Presence"                value={vitals.presence}  unit=""     color="amber"   />
-            <VitalCard icon={Zap}           label="EEG Alpha"               value={vitals.eegAlpha}  unit="µV"   color="indigo"  />
-            <VitalCard icon={Waves}         label="EEG Beta"                value={vitals.eegBeta}   unit="µV"   color="violet"  />
-            <VitalCard icon={Brain}     label="EEG Gamma"            value={vitals.eegGamma} unit="µV" color="purple" />
-            <VitalCard icon={Brain}         label="EEG Insight"               value={vitals.eegGamma}  unit="µV"   color="purple"  />
+            <VitalCard icon={Zap}           label="EEG Alpha"               value={vitals.alphalpha}  unit="µV"   color="indigo"  />
+            <VitalCard icon={Waves}         label="EEG Beta"                value={vitals.beta}   unit="µV"   color="violet"  />
+            <VitalCard icon={Brain}     label="EEG Gamma"            value={vitals.gamma} unit="µV" color="purple" />
+            <VitalCard icon={Brain}         label="EEG Insight"               value={vitals.insight}  unit="µV"   color="purple"  />
             <VitalCard icon={AlertTriangle} label="Alert / Status"          value={vitals.alert}     unit=""     color="emerald" />
           </div>
   
