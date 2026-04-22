@@ -4,6 +4,8 @@ import { Server } from "socket.io";
 import cors from "cors";
 import mongoose from "mongoose";
 import fetch from "node-fetch";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(cors());
@@ -20,22 +22,18 @@ const io = new Server(server, {
 
 //MONGODB CONNECTION
 
-mongoose.connect(
-  //"mongodb+srv://shrutiphadwork:shruti@cluster0.7dklm23.mongodb.net/?appName=Cluster0"
-  "mongodb://shrutiphadwork:shruti@ac-cwjiuhy-shard-00-00.7dklm23.mongodb.net:27017,ac-cwjiuhy-shard-00-01.7dklm23.mongodb.net:27017,ac-cwjiuhy-shard-00-02.7dklm23.mongodb.net:27017/?ssl=true&replicaSet=atlas-kp2bot-shard-0&authSource=admin&appName=Cluster0"
-  
-  )
-.then(() => console.log("MongoDB Atlas Connected"))
-.catch(err => console.log(err));
+mongoose.connect(process.env.MONGODB)
+  .then(() => console.log("MongoDB Atlas Connected"))
+  .catch(err => console.log(err));
 
 
-io.on("connection", socket => {
-  console.log("Client connected:", socket.id);
+// io.on("connection", socket => {
+//   console.log("Client connected:", socket.id);
 
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
-});
+//   socket.on("disconnect", () => {
+//     console.log("Client disconnected");
+//   });
+// });
 
 
 //mongoose.connect("mongodb://localhost:27017/sleepcare");
@@ -304,7 +302,6 @@ io.on("connection", socket => {
   console.log("Client connected:", socket.id);
   socket.on("disconnect", () => console.log("Client disconnected:", socket.id));
 });
-
 
 
 server.listen(3001, () => {

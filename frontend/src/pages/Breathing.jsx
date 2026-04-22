@@ -141,7 +141,7 @@ export default function BreathingMonitor() {
             <VitalCard icon={Droplets} label="SpO₂" value={vitals.spo2} unit="%" color="cyan" />
             <VitalCard icon={Heart} label="Heart Rate" value={vitals.bpm} unit="BPM" color="rose" />
             <VitalCard icon={Gauge} label="Presence" value={vitals.presence} unit="" color="amber" />
-            <VitalCard icon={Activity}   label="ECG HR / EEG RMS"        value={vitals.ecg}       unit=""     color="red"     />
+
             <VitalCard icon={Wind} label="ECG Stable / Breathing" value={vitals.breathing} unit="" color="sky" />
             <VitalCard icon={AlertTriangle} label="Alert / Status"          value={vitals.alert}     unit=""     color="emerald" />
         </div>
