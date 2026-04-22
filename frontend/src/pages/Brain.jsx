@@ -152,7 +152,8 @@ export default function BrainMonitor() {
           <VitalCard icon={Gauge}         label="Presence"       value={vitals.presence}   unit="" color="amber" />
           <VitalCard icon={Zap}           label="EEG Alpha"      value={vitals.alpha}      unit="µV" color="indigo" />
           <VitalCard icon={Waves}         label="EEG Beta"       value={vitals.beta}       unit="µV" color="violet" />
-          <VitalCard icon={Brain}         label="EEG Gamma"      value={vitals.gamma}      unit="µV" color="purple" />
+          <VitalCard icon={Brain}        label="EEG Gamma"         value={vitals.gamma}       unit="µV" color="purple" />
+          <VitalCard icon={Waves}         label="EEG RMS"       value={vitals.rms}       unit="µV" color="violet" />
           <VitalCard icon={Brain}         label="EEG Insight"    value={vitals.insight}    unit="" color="purple" />
           <VitalCard icon={AlertTriangle} label="Sleep Stage"    value={vitals.sleepStage} unit="" color="emerald" />
         </div>
