@@ -10,7 +10,7 @@ import NormalMonitor    from "./pages/Normal";
 import HeartMonitor     from "./pages/Heart";
 import BrainMonitor     from "./pages/Brain";
 import BreathingMonitor from "./pages/Breathing";
-import NormalHistory    from "./pages/History";   // default export = NormalHistory
+import NormalHistory    from "./pages/NormalHistory";   // default export = NormalHistory
 import HeartHistory     from "./pages/HeartHistory";
 import BrainHistory     from "./pages/BrainHistory";
 import BreathingHistory from "./pages/BreathingHistory";
