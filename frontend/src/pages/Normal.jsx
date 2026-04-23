@@ -69,7 +69,7 @@ export default function NormalMonitor() {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'brain_report.xlsx';
+    a.download = 'normal_report.xlsx';
     a.click();
     a.remove();
     window.URL.revokeObjectURL(url);
@@ -155,7 +155,6 @@ export default function NormalMonitor() {
           <Button onClick={() => navigate("/history")}>View History</Button>
           <Button className={`bg-gradient-to-r ${currentMode.gradient} text-white`}>
             <button onClick={handleDownload}>📥 Download Report</button>
-            Download Report
           </Button>
         </div>
 

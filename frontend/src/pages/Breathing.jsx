@@ -80,7 +80,7 @@ export default function BreathingMonitor() {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'brain_report.xlsx';
+    a.download = 'breathing_report.xlsx';
     a.click();
     a.remove();
     window.URL.revokeObjectURL(url);
@@ -168,7 +168,6 @@ export default function BreathingMonitor() {
             <Button onClick={() => navigate("/history/breathing")}>View History</Button>
           <Button className={`bg-gradient-to-r ${currentMode.gradient} text-white`}>
           <button onClick={handleDownload}>📥 Download Report</button>
-              Download Report
             </Button>
           </div>
   

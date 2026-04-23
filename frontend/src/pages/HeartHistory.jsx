@@ -122,7 +122,6 @@ function CnnStrip({ data }) {
   );
 }
 
-/* ════════════════════════════════════════════════ */
 export default function HeartHistory() {
   const navigate  = useNavigate();
   const [data,    setData]    = useState([]);
