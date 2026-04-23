@@ -364,6 +364,164 @@ app.get("/api/download/brain", async (req, res) => {
 
 
 
+app.get("/api/download/heart", async (req, res) => {
+  try {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Heart Monitor Data");
+
+    sheet.columns = [
+      { header: "Timestamp", key: "timestamp", width: 25 },
+      { header: "SpO2", key: "spo2", width: 12 },
+      { header: "BPM", key: "bpm", width: 12 },
+      { header: "Presence", key: "presence", width: 12 },
+      { header: "ECG", key: "ecg", width: 15 },
+      { header: "Breathing", key: "breathing", width: 18 },
+      { header: "Alert", key: "alert", width: 20 },
+      { header: "CNN Label", key: "cnn_label", width: 18 },
+      { header: "CNN Confidence", key: "cnn_confidence", width: 18 },
+      { header: "Risk Score", key: "risk_score", width: 12 },
+      { header: "Risk Level", key: "risk_level", width: 15 },
+    ];
+
+    sheet.getRow(1).font = { bold: true };
+
+    const data = await Reading.find({ mode: 2 }).sort({ timestamp: -1 }).lean();
+
+    data.forEach((record) => {
+      sheet.addRow({
+        timestamp: record.timestamp,
+        spo2: record.spo2 ?? "--",
+        bpm: record.heart_rate ?? "--",
+        presence: record.presence ? "YES" : "NO",
+        ecg: record.ecg_hr ?? record.rms ?? "--",
+        breathing: record.ecg_hr_stable ?? record.breathing_status ?? "--",
+        alert: record.alert ?? "--",
+        cnn_label: record.cnn_label ?? "--",
+        cnn_confidence: record.cnn_confidence ?? "--",
+        risk_score: record.risk_score ?? "--",
+        risk_level: record.risk_level ?? "--",
+      });
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="heart_report.xlsx"'
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (err) {
+    console.error("Heart export failed:", err);
+    res.status(500).json({ error: "Failed to export heart report" });
+  }
+});
+
+
+app.get("/api/download/normal", async (req, res) => {
+  try {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Normal Monitor Data");
+
+    sheet.columns = [
+      { header: "Timestamp", key: "timestamp", width: 25 },
+      { header: "SpO2", key: "spo2", width: 12 },
+      { header: "BPM", key: "bpm", width: 12 },
+      { header: "Presence", key: "presence", width: 12 },
+      { header: "Alert", key: "alert", width: 20 },
+      { header: "Risk Score", key: "risk_score", width: 12 },
+      { header: "Risk Level", key: "risk_level", width: 15 },
+    ];
+
+    sheet.getRow(1).font = { bold: true };
+
+    const data = await Reading.find({ mode: 1 }).sort({ timestamp: -1 }).lean();
+
+    data.forEach((record) => {
+      sheet.addRow({
+        timestamp: record.timestamp,
+        spo2: record.spo2 ?? "--",
+        bpm: record.heart_rate ?? "--",
+        presence: record.presence ? "YES" : "NO",
+        alert: record.alert ?? "--",
+        risk_score: record.risk_score ?? "--",
+        risk_level: record.risk_level ?? "--",
+      });
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="normal_report.xlsx"'
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (err) {
+    console.error("Normal export failed:", err);
+    res.status(500).json({ error: "Failed to export normal report" });
+  }
+});
+
+
+app.get("/api/download/breathing", async (req, res) => {
+  try {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Breathing Monitor Data");
+
+    sheet.columns = [
+      { header: "Timestamp", key: "timestamp", width: 25 },
+      { header: "SpO2", key: "spo2", width: 12 },
+      { header: "BPM", key: "bpm", width: 12 },
+      { header: "Presence", key: "presence", width: 12 },
+      { header: "Breathing", key: "breathing", width: 18 },
+      { header: "Breathing Rate", key: "breathing_rate", width: 18 },
+      { header: "Alert", key: "alert", width: 20 },
+      { header: "Risk Score", key: "risk_score", width: 12 },
+      { header: "Risk Level", key: "risk_level", width: 15 },
+    ];
+
+    sheet.getRow(1).font = { bold: true };
+
+    const data = await Reading.find({ mode: 4 }).sort({ timestamp: -1 }).lean();
+
+    data.forEach((record) => {
+      sheet.addRow({
+        timestamp: record.timestamp,
+        spo2: record.spo2 ?? "--",
+        bpm: record.heart_rate ?? "--",
+        presence: record.presence ? "YES" : "NO",
+        breathing: record.ecg_hr_stable ?? record.breathing_status ?? "--",
+        breathing_rate: record.breathing_rate ?? "--",
+        alert: record.alert ?? "--",
+        risk_score: record.risk_score ?? "--",
+        risk_level: record.risk_level ?? "--",
+      });
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="breathing_report.xlsx"'
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (err) {
+    console.error("Breathing export failed:", err);
+    res.status(500).json({ error: "Failed to export breathing report" });
+  }
+});
+
 async function shutdown(sig) {
   log.info(`[Shutdown] ${sig} — flushing ${writeBuffer.length} writes…`);
   await flushWriteBuffer(); await mongoose.connection.close();

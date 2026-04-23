@@ -61,6 +61,21 @@ export default function NormalMonitor() {
 
   const IconComponent = currentMode.icon;
 
+
+
+  const handleDownload = async () => {
+    const response = await fetch("http://localhost:3001/api/download/normal");
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'brain_report.xlsx';
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  };
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-cyan-50">
       
@@ -139,6 +154,7 @@ export default function NormalMonitor() {
           </Button>
           <Button onClick={() => navigate("/history")}>View History</Button>
           <Button className={`bg-gradient-to-r ${currentMode.gradient} text-white`}>
+            <button onClick={handleDownload}>📥 Download Report</button>
             Download Report
           </Button>
         </div>
