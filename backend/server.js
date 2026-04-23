@@ -5,6 +5,8 @@ import { Server }  from "socket.io";
 import cors      from "cors";
 import mongoose  from "mongoose";
 import fetch     from "node-fetch";
+import ExcelJS from "exceljs";
+
 
 const PORT       = parseInt(process.env.PORT)      || 3001;
 const MONGO_URI  = process.env.MONGODB;
@@ -16,11 +18,6 @@ if (!MONGO_URI) {
   process.exit(1);
 }
 
-const log = {
-  info:  (...a) => console.log (`[${new Date().toISOString()}] [INFO ]`, ...a),
-  warn:  (...a) => console.warn(`[${new Date().toISOString()}] [WARN ]`, ...a),
-  error: (...a) => console.error(`[${new Date().toISOString()}] [ERROR]`, ...a),
-};
 
 const app    = express();
 const server = http.createServer(app);
@@ -171,7 +168,7 @@ function getSessionId() {
 let connectedClients = 0;
 io.on("connection", (socket) => {
   connectedClients++;
-  log.info(`[WS] Client connected: ${socket.id}`);
+  console.log(`Client connected: ${socket.id}`);
   socket.emit("ecg-classification", { label: lastCnnLabel, confidence: lastCnnConfidence });
   socket.on("disconnect", () => connectedClients--);
 });
@@ -316,6 +313,57 @@ app.get("/health", (_req, res) => {
 });
 
 
+
+app.get("/api/download/brain", async (req, res) => {
+  try {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Brain Monitor Data");
+
+    sheet.columns = [
+      { header: "Timestamp", key: "timestamp", width: 25 },
+      { header: "Alpha", key: "alpha", width: 12 },
+      { header: "Beta", key: "beta", width: 12 },
+      { header: "Gamma", key: "gamma", width: 12 },
+      { header: "RMS", key: "rms", width: 12 },
+      { header: "Sleep Stage", key: "sleep_stage", width: 20 },
+      { header: "Risk Score", key: "risk_score", width: 12 },
+      { header: "Risk Level", key: "risk_level", width: 15 },
+    ];
+
+    const data = await Reading.find({ mode: 3 }).sort({ timestamp: -1 }).lean();
+
+    data.forEach((record) => {
+      sheet.addRow({
+        timestamp: record.timestamp,
+        alpha: record.alpha,
+        beta: record.beta,
+        gamma: record.gamma,
+        rms: record.rms,
+        sleep_stage: record.sleep_stage,
+        risk_score: record.risk_score,
+        risk_level: record.risk_level,
+      });
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="brain_report.xlsx"'
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (err) {
+    console.error("Brain export failed:", err);
+    res.status(500).json({ error: "Failed to export brain report" });
+  }
+});
+
+
+
 async function shutdown(sig) {
   log.info(`[Shutdown] ${sig} — flushing ${writeBuffer.length} writes…`);
   await flushWriteBuffer(); await mongoose.connection.close();
@@ -326,5 +374,8 @@ process.on("SIGTERM", () => shutdown("SIGTERM"));
 process.on("SIGINT",  () => shutdown("SIGINT"));
 
 mongoose.connect(MONGO_URI)
-  .then(() => { log.info(" MongoDB connected"); server.listen(PORT, () => log.info(` http://localhost:${PORT}`)); })
-  .catch(err => { log.error("MongoDB failed:", err.message); process.exit(1); });
+  .then(() => {
+    console.log(" MongoDB connected");
+    server.listen(PORT, () => console.log(` Server is working on ${PORT}`));
+  })
+  .catch(err => { console.log("MongoDB failed:", err.message); process.exit(1); });

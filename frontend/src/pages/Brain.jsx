@@ -12,6 +12,7 @@ import {
   Zap, Waves, AlertTriangle, Power, Heart,
 } from "lucide-react";
 
+
 export default function BrainMonitor() {
   const [toastAlerts, setToastAlerts] = useState([]);
   const navigate = useNavigate();
@@ -83,6 +84,21 @@ export default function BrainMonitor() {
     gradient: "from-indigo-500 to-violet-500",
   };
   const IconComponent = currentMode.icon;
+
+
+  const handleDownload = async () => {
+    const response = await fetch("http://localhost:3001/api/download/brain");
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'brain_report.xlsx';
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  };
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50 to-cyan-50">
@@ -170,7 +186,7 @@ export default function BrainMonitor() {
             View History
           </Button>
           <Button className={`bg-gradient-to-r ${currentMode.gradient} text-white`}>
-            Download Report
+            <button onClick={handleDownload}>📥 Download Report</button>
           </Button>
         </div>
       </main>
