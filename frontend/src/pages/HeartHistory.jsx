@@ -140,7 +140,7 @@ export default function HeartHistory() {
           spo2:    r.spo2         || 0,
           ecg:     r.ecg_hr       || 0,
           ecgS:    r.ecg_hr_stable|| 0,
-          cnn:     r.cnn_label    || "Normal",
+          cnn:     r.cnn_label    || "Analysing...",
           risk:    r.risk_score   || 0,
           rl:      r.risk_level   || "normal",
         })));

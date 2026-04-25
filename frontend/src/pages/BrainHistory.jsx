@@ -183,6 +183,82 @@ export default function BrainHistory() {
     { subject:"HR-50",  v: Math.max(0,(last.hr||50)-50) },
   ];
 
+
+  
+const [question, setQuestion] = useState("");
+const [aiAnswer, setAiAnswer] = useState("");
+const [asking, setAsking] = useState(false);
+
+
+const askAI = async () => {
+  if (!question.trim()) return;
+
+  try {
+    setAsking(true);
+    setAiAnswer("");
+
+    const res = await fetch(`${API_URL}/query`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    });
+
+    const data = await res.json();
+    setAiAnswer(data.answer || data.error || "No answer returned.");
+  } catch {
+    setAiAnswer("AI assistant is unavailable right now.");
+  } finally {
+    setAsking(false);
+  }
+};
+
+<Section title="Ask AI about Brain Data" sub="This uses your RAG + Ollama pipeline.">
+  <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
+    <input
+      value={question}
+      onChange={(e) => setQuestion(e.target.value)}
+      placeholder="Ask something like: Was the patient in deep sleep recently?"
+      style={{
+        flex: 1,
+        padding: "10px 12px",
+        borderRadius: 10,
+        border: "1px solid #cbd5e1",
+        outline: "none",
+      }}
+    />
+    <button
+      onClick={askAI}
+      disabled={asking}
+      style={{
+        background: "#7c3aed",
+        color: "#fff",
+        border: "none",
+        borderRadius: 10,
+        padding: "10px 16px",
+        cursor: "pointer",
+      }}
+    >
+      {asking ? "Asking..." : "Ask AI"}
+    </button>
+  </div>
+
+  {aiAnswer && (
+    <div
+      style={{
+        background: "#f8fafc",
+        border: "1px solid #e2e8f0",
+        borderRadius: 12,
+        padding: "12px 14px",
+        color: "#334155",
+        fontSize: 14,
+        whiteSpace: "pre-wrap",
+      }}
+    >
+      {aiAnswer}
+    </div>
+  )}
+</Section>
+
   return (
     <div style={{ minHeight:"100vh", background:"linear-gradient(135deg,#f8fafc 0%,#f5f3ff 50%,#ede9fe 100%)" }}>
       <style>{`@keyframes pulseRing{0%{box-shadow:0 0 0 0 currentColor80}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}`}</style>

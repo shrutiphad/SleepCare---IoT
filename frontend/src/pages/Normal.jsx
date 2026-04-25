@@ -149,9 +149,9 @@ export default function NormalMonitor() {
 
         {/* ACTIONS */}
         <div className="mt-6 flex justify-center gap-4">
-          <Button variant="outline">
+          {/* <Button variant="outline">
             <Power className="w-4 h-4 mr-2" /> End Session
-          </Button>
+          </Button> */}
           <Button onClick={() => navigate("/history")}>View History</Button>
           <Button className={`bg-gradient-to-r ${currentMode.gradient} text-white`}>
             <button onClick={handleDownload}>📥 Download Report</button>
