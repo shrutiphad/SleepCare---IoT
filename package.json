@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "groq": "^5.22.0",
+    "ollama": "^0.6.3"
+  }
+}
