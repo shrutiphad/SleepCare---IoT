@@ -9,8 +9,8 @@ import ExcelJS from "exceljs";
 
 const PORT = parseInt(process.env.PORT) || 3001;
 const MONGO_URI = process.env.MONGODB;
-const ECG_SERVER = process.env.ECG_SERVER_URL || "http://localhost:5001";
-const RAG_SERVER = process.env.RAG_SERVER_URL || "http://localhost:5002";
+const ECG_SERVER = process.env.ECG_SERVER_URL;
+const RAG_SERVER = process.env.RAG_SERVER_URL;
 
 const log = {
   info: (...args) => console.log(...args),
