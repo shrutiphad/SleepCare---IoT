@@ -1,4 +1,6 @@
 flask
-tensorflow
-numpy
 flask-cors
+supabase
+groq
+requests
+gunicorn
