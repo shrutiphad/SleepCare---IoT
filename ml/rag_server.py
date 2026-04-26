@@ -14,7 +14,7 @@ CORS(app)
 
 # Groq client
 client = Groq(api_key=os.getenv("GROQ_KEY"))
-print("API KEY:", os.getenv("GROQ_API_KEY"))
+print("API KEY:", os.getenv("GROQ_KEY"))
 
 # Embedding model
 embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
