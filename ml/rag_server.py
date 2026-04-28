@@ -5,6 +5,15 @@ from supabase import create_client, Client
 from groq import Groq
 import requests
 
+# Optional Chroma mirror for local/dev use
+CHROMA_ENABLED = os.getenv("CHROMA_ENABLED", "false").lower() == "true"
+chroma_collection = None
+
+if CHROMA_ENABLED:
+    import chromadb
+    chroma_client = chromadb.PersistentClient(path="./chroma_sleepcare")
+    chroma_collection = chroma_client.get_or_create_collection(name="sleepcare")
+
 app = Flask(__name__)
 CORS(app)
 
@@ -75,8 +84,7 @@ def health():
         "status": "ok",
         "service": "sleepcare-rag-supabase",
         "groq_model": GROQ_MODEL,
-        "supabase_url_present": bool(SUPABASE_URL),
-        "embed_url_present": bool(SUPABASE_EMBED_URL),
+        "chroma_enabled": CHROMA_ENABLED
     })
 
 
@@ -99,12 +107,18 @@ def store_reading():
             "embedding": embedding,
         }
 
-        result = supabase.table("sleepcare_documents").insert(row).execute()
+        supabase.table("sleepcare_documents").insert(row).execute()
 
-        return jsonify({
-            "status": "stored",
-            "count": len(result.data) if result.data else 0
-        })
+        # Optional advanced local mirror
+        if CHROMA_ENABLED and chroma_collection is not None:
+            chroma_collection.add(
+                documents=[text],
+                embeddings=[embedding],
+                ids=[str(os.urandom(8).hex())],
+                metadatas=[row["metadata"]],
+            )
+
+        return jsonify({"status": "stored"})
     except Exception as e:
         return jsonify({"error": f"store-reading failed: {str(e)}"}), 500
 
