@@ -9,8 +9,8 @@ import ExcelJS from "exceljs";
 
 const PORT = parseInt(process.env.PORT) || 3001;
 const MONGO_URI = process.env.MONGODB;
-const ECG_SERVER = process.env.ECG_SERVER_URL;
-const RAG_SERVER = process.env.RAG_SERVER_URL;
+const ECG_SERVER = process.env.ECG_SERVER_URL || "http://localhost:5001";
+const RAG_SERVER = process.env.RAG_SERVER_URL || "http://localhost:5002";
 
 const log = {
   info: (...args) => console.log(...args),
@@ -491,12 +491,14 @@ app.post("/query", async (req, res) => {
       body: JSON.stringify({ question }),
     });
 
+    console.log("RAG_SERVER =", RAG_SERVER);
     if (!r.ok) throw new Error(`${r.status}`);
     res.json(await r.json());
   } catch (err) {
     res
       .status(503)
       .json({ error: "AI assistant unavailable. Run: python ml/rag_server.py" });
+      console.log(err);
   }
 });
 

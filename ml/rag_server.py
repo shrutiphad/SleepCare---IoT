@@ -4,6 +4,8 @@ from flask_cors import CORS
 from supabase import create_client, Client
 from groq import Groq
 import requests
+from dotenv import load_dotenv
+load_dotenv()
 
 # Optional Chroma mirror for local/dev use
 CHROMA_ENABLED = os.getenv("CHROMA_ENABLED", "false").lower() == "true"
