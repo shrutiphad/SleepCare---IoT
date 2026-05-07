@@ -2,7 +2,7 @@
 
 export const mockPatient = {
   id: "PAT-2025-001",
-  fullName: "Mariyah Shaikh",
+  fullName: "Shruti Phad",
   email: "mariyah@email.com",
   dob: "1990-05-15",
   age: 21,

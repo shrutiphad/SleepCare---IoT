@@ -22,7 +22,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Auth */}
-          <Route path="/"                  element={<Navigate to="/login" replace />} />
+          <Route path="/"                  element={<Navigate to="/mode-select" replace />} />
           <Route path="/login"             element={<Login />} />
           <Route path="/role-select"       element={<RoleSelect />} />
           <Route path="/signup/patient"    element={<PatientSignup />} />
